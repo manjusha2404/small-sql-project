@@ -1,0 +1,57 @@
+CREATE DATABASE STUDENTMANAGEMENT;
+USE STUDENTMANAGEMENT;
+CREATE TABLE STUDENTS(
+StudentID INT AUTO_INCREMENT PRIMARY KEY,
+Name VARCHAR(50) NOT NULL,
+Gender VARCHAR(1) CHECK (Gender IN ('M', 'F')),
+Age INT CHECK (Age >= 5 AND Age <= 25),
+Grade VARCHAR(10) NOT NULL,
+MathScore INT CHECK (MathScore BETWEEN 0 AND 100),
+ScienceScore INT CHECK (ScienceScore BETWEEN 0 AND 100),
+EnglishScore INT CHECK (EnglishScore BETWEEN 0 AND 100)
+);
+INSERT INTO Students (Name, Gender, Age, Grade, MathScore, ScienceScore, EnglishScore)
+VALUES 
+('GEETA', 'F', 16, 'A', 95, 90, 88),
+('SHYAM', 'M', 17, 'B', 80, 85, 82),
+('RAM', 'M', 15, 'A', 92, 87, 91),
+('ANUSHKA', 'F', 18, 'C', 70, 75, 78),
+('GYAN', 'M', 16, 'B', 85, 89, 84),
+('RIYA', 'F', 17, 'A', 96, 94, 93),
+('MUKESH', 'M', 15, 'C', 68, 70, 65),
+('SITA', 'F', 16, 'B', 83, 81, 85),
+('ISAAN', 'M', 17, 'A', 98, 97, 96),
+('JACKY', 'M', 18, 'C', 72, 74, 71);
+-- 1. Display all students and their details to get an overview of the data--
+SELECT* FROM STUDENTS;
+-- 2. Calculate the average scores for each subject to understand subject-wise performance
+SELECT 
+    AVG(MathScore) AS Avg_MathScore, 
+    AVG(ScienceScore) AS Avg_ScienceScore, 
+    AVG(EnglishScore) AS Avg_EnglishScore
+FROM Students;
+-- 3. Find the student(s) with the highest total score across all subjects to identify the top performer.
+SELECT Name, Gender, Age, Grade, 
+       MathScore, ScienceScore, EnglishScore,
+       (MathScore + ScienceScore + EnglishScore) AS TotalScore
+FROM Students
+ORDER BY TotalScore DESC
+LIMIT 1;
+-- 4. Count the number of students in each grade to observe grade distributions
+SELECT GRADE,COUNT(*) AS STUDENTCOUNT
+FROM STUDENTS
+GROUP BY GRADE;
+-- 5. Find the average score for male and female students to compare performance by gender.
+SELECT GENDER,
+       AVG(MathScore) AS Avg_MathScore, 
+       AVG(ScienceScore) AS Avg_ScienceScore, 
+       AVG(EnglishScore) AS Avg_EnglishScore
+       FROM STUDENTS 
+       GROUP BY GENDER;
+   -- 6. Identify students whose Math score is above 80 to highlight high achievers in Math.    
+SELECT * FROM Students 
+WHERE MathScore > 80; 
+-- 7. Update the grade of a student with a specific Student ID to reflect changes or corrections.  
+UPDATE Students 
+SET Grade = 'B'  
+WHERE StudentID = 5;
